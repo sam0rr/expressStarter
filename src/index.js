@@ -1,17 +1,24 @@
 const express = require('express');
 const config = require('./config/env');
+const logger = require('./utils/logger');
 const { connectToMongo } = require('./config/mongo');
-const { setupRoutes } = require('./interfaces/routes');
+const { setupRoutes } = require('./routes');
+const errorHandler = require('./utils/errorHandler');
 
 const app = express();
 app.use(express.json());
 
-connectToMongo().then(() => {
-    setupRoutes(app);
+connectToMongo()
+    .then(() => {
+        setupRoutes(app);
 
-    app.listen(config.port, () => {
-        console.log(`${config.appName} running at http://localhost:${config.port}`);
+        app.use(errorHandler);
+
+        app.listen(config.port, () => {
+            logger.info(`${config.appName} running at http://localhost:${config.port}`);
+        });
+    })
+    .catch((err) => {
+        logger.error('Failed to start application: ' + err.message);
+        process.exit(1);
     });
-}).catch((err) => {
-    console.error('Failed to start application:', err);
-});

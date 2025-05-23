@@ -1,5 +1,6 @@
 const BaseService = require('./BaseService');
-const UserModel   = require('../models/User');
+const UserModel = require('../models/User');
+const Cryptography = require('../cryptography/Cryptography');
 
 class UserService extends BaseService {
     constructor() {
@@ -7,7 +8,23 @@ class UserService extends BaseService {
     }
 
     async createUser(data) {
-        return this.create(data);
+        const user = { ...data };
+
+        if (user.password) {
+            user.password = Cryptography.hashPassword(user.password);
+        }
+
+        return this.create(user);
+    }
+
+    async updateUserById(id, data) {
+        const user = { ...data };
+
+        if (user.password) {
+            user.password = Cryptography.hashPassword(user.password);
+        }
+
+        return this.updateById(id, user);
     }
 
     async getUserById(id) {
@@ -16,10 +33,6 @@ class UserService extends BaseService {
 
     async getAllUsers() {
         return this.findAll();
-    }
-
-    async updateUserById(id, data) {
-        return this.updateById(id, data);
     }
 
     async deleteUserById(id) {

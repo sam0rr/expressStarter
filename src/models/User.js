@@ -22,6 +22,13 @@ const userSchema = new mongoose.Schema({
         max: 150,
         default: 18
     },
+    password: {
+        type: String,
+        required: true,
+        minlength: 8,
+        maxlength: 100,
+        match: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/,
+    },
     date: {
         type: Date,
         default: Date.now

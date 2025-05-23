@@ -37,3 +37,6 @@ class ErrorMapResolver {
         }
     }
 }
+
+module.exports = ErrorMapResolver;
+

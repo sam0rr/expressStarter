@@ -1,6 +1,6 @@
 const BaseService = require('./BaseService');
 const UserModel = require('../models/User');
-const Cryptography = require('../cryptography/Cryptography');
+const EncryptionService = require('./Encryption/EncryptionService');
 
 class UserService extends BaseService {
     constructor() {
@@ -11,7 +11,7 @@ class UserService extends BaseService {
         const user = { ...data };
 
         if (user.password) {
-            user.password = Cryptography.hashPassword(user.password);
+            user.password = await EncryptionService.hashPassword(user.password);
         }
 
         return this.create(user);
@@ -21,7 +21,7 @@ class UserService extends BaseService {
         const user = { ...data };
 
         if (user.password) {
-            user.password = Cryptography.hashPassword(user.password);
+            user.password = await EncryptionService.hashPassword(user.password);
         }
 
         return this.updateById(id, user);

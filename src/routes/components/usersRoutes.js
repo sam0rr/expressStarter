@@ -6,9 +6,20 @@ const userValidator = require('../../validators/userValidator');
 
 router.post(
     '/',
-    userValidator.validateCreateUser,
+    userValidator.validateUser,
     (req, res, next) => userCtrl.create(req, res, next)
 );
+
+router.post(
+    '/update/:id',
+    userValidator.validateUser,
+    (req, res, next) => userCtrl.update(req, res, next)
+)
+
+router.delete(
+    '/:id',
+    (req, res, next) => userCtrl.delete(req, res, next)
+)
 
 router.get(
     '/',

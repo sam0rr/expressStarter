@@ -11,7 +11,7 @@ const createUserSchema = z.object({
 });
 
 class UserValidator {
-    static validateCreateUser(req, res, next) {
+    static validateUser(req, res, next) {
         const result = createUserSchema.safeParse(req.body);
         if (!result.success) {
             const details = result.error.flatten().fieldErrors;

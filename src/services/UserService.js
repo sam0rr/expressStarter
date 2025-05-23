@@ -1,34 +1,29 @@
-const UserModel = require('../models/User');
-const { StatusCodes } = require('http-status-codes');
-const AppError   = require('../errors/AppError');
+const BaseService = require('./BaseService');
+const UserModel   = require('../models/User');
 
-class UserService {
-    async createUser({ name, email }) {
-        const exists = await UserModel.exists({ email });
-        if (exists) {
-            throw new AppError(
-                'User already exists',
-                StatusCodes.CONFLICT
-            );
-        }
+class UserService extends BaseService {
+    constructor() {
+        super(UserModel);
+    }
 
-        const user = new UserModel({ name, email });
-        return await user.save();
+    async createUser(data) {
+        return this.create(data, { uniqueFields: ['email'] });
     }
 
     async getUserById(id) {
-        const user = await UserModel.findById(id).lean();
-        if (!user) {
-            throw new AppError(
-                'User not found',
-                StatusCodes.NOT_FOUND
-            );
-        }
-        return user;
+        return this.findById(id);
     }
 
     async getAllUsers() {
-        return await UserModel.find().lean();
+        return this.findAll();
+    }
+
+    async updateUserById(id, data) {
+        return this.updateById(id, data);
+    }
+
+    async deleteUserById(id) {
+        return this.deleteById(id);
     }
 }
 

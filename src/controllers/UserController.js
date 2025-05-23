@@ -16,6 +16,16 @@ class UserController extends BaseController {
         const user = await userService.getUserById(req.params.id);
         this.sendSuccess(res, user);
     }
+
+    async update(req, res) {
+        const user = await userService.updateUserById(req.params.id, req.body);
+        this.sendUpdated(res, user);
+    }
+
+    async delete(req, res) {
+        await userService.deleteUserById(req.params.id);
+        this.sendDeleted(res);
+    }
 }
 
 module.exports = new UserController();

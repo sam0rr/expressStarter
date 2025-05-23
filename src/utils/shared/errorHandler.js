@@ -1,5 +1,5 @@
-const logger   = require('../utils/logger');
-const AppError = require('../errors/AppError');
+const logger   = require('./logger');
+const AppError = require('../../errors/AppError');
 
 function normalizeError(err) {
     if (err instanceof AppError) {

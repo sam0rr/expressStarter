@@ -8,12 +8,14 @@
     "start": "node src/index.js"
   },
   "dependencies": {
+    "ajv": "^8.17.1",
+    "ajv-errors": "^3.0.0",
+    "ajv-formats": "^3.0.1",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "http-status-codes": "^2.3.0",
-    "joi": "^17.13.3",
     "mongoose": "^8.15.0",
-    "mongoose-joi-schema": "^0.0.2",
+    "mongoose-schema-jsonschema": "^3.0.2",
     "winston": "^3.17.0"
   },
   "private": true,

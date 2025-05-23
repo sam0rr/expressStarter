@@ -11,17 +11,19 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true,
+        match: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
         trim: true
     },
     age: {
         type: Number,
+        required: true,
         trim: true,
         min: 1,
         max: 150,
         default: 18
     },
     date: {
-        date: Date,
+        type: Date,
         default: Date.now
     }
 }, {

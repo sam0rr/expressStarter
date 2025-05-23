@@ -2,10 +2,10 @@ const express = require('express');
 const router = express.Router();
 
 const userCtrl = require('../../controllers/UserController');
-const { MongooseJoiValidator } = require('../../validator/MongooseJoiValidator');
+const { MongooseAjvValidator } = require('../../validator/MongooseAjvValidator');
 const User = require('../../models/User');
 
-const validator = new MongooseJoiValidator(User);
+const validator = new MongooseAjvValidator(User);
 
 router.post(
     '/',
@@ -13,15 +13,15 @@ router.post(
     userCtrl.create
 );
 
-router.post(
-    '/update/:id',
-    validator.validateAll(),
+router.put('/:id',
+    validator.validateParams().only('id'),
+    validator.validateBody().optionalAll(),
     userCtrl.update
 );
 
 router.delete(
     '/:id',
-    validator.validateAll(),
+    validator.validateParams().only('id'),
     userCtrl.delete
 );
 
@@ -32,7 +32,7 @@ router.get(
 
 router.get(
     '/:id',
-    validator.validateAll(['params']),
+    validator.validateParams().only('id'),
     userCtrl.findById
 );
 

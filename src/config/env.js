@@ -10,6 +10,7 @@ const config = {
     nodeEnv: process.env.NODE_ENV || 'development',
     appName: process.env.APP_NAME || 'ExpressStarter',
     apiPrefix: process.env.API_PREFIX || '/api',
+    lang: process.env.LANG || 'en',
     connectionString: process.env.CONNECTION_STRING
         || `mongodb://${dbUser}:${dbPassword}@mongo:27017/${dbName}?authSource=admin`
 };

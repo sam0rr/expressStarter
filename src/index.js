@@ -1,9 +1,9 @@
 const express = require('express');
 const config = require('./config/env');
-const logger = require('./utils/logger');
+const logger = require('./utils/shared/logger');
 const { connectToMongo } = require('./config/mongo');
 const { setupRoutes } = require('./routes/setupRoutes');
-const errorHandler = require('./utils/errorHandler');
+const errorHandler = require('./utils/shared/errorHandler');
 
 const index = express();
 index.use(express.json());

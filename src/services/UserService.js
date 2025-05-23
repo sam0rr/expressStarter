@@ -7,7 +7,7 @@ class UserService extends BaseService {
     }
 
     async createUser(data) {
-        return this.create(data, { uniqueFields: ['email'] });
+        return this.create(data);
     }
 
     async getUserById(id) {

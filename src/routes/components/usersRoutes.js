@@ -2,33 +2,38 @@ const express = require('express');
 const router = express.Router();
 
 const userCtrl = require('../../controllers/UserController');
-const userValidator = require('../../validators/userValidator');
+const { MongooseJoiValidator } = require('../../validator/MongooseJoiValidator');
+const User = require('../../models/User');
+
+const validator = new MongooseJoiValidator(User);
 
 router.post(
     '/',
-    userValidator.validateUser,
-    (req, res, next) => userCtrl.create(req, res, next)
+    validator.validateBody(),
+    userCtrl.create
 );
 
 router.post(
     '/update/:id',
-    userValidator.validateUser,
-    (req, res, next) => userCtrl.update(req, res, next)
-)
+    validator.validateAll(),
+    userCtrl.update
+);
 
 router.delete(
     '/:id',
-    (req, res, next) => userCtrl.delete(req, res, next)
-)
+    validator.validateAll(),
+    userCtrl.delete
+);
 
 router.get(
     '/',
-    (req, res, next) => userCtrl.findAll(req, res, next)
+    userCtrl.findAll
 );
 
 router.get(
     '/:id',
-    (req, res, next) => userCtrl.findById(req, res, next)
+    validator.validateAll(['params']),
+    userCtrl.findById
 );
 
 module.exports = router;

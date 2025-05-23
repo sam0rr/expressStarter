@@ -1,4 +1,4 @@
-const { StatusCodes, ReasonPhrases } = require('http-status-codes');
+const { StatusCodes, getReasonPhrase } = require('http-status-codes');
 
 class AppError extends Error {
     constructor(
@@ -7,10 +7,12 @@ class AppError extends Error {
         details = null
     ) {
         super(message);
+
         this.name   = this.constructor.name;
         this.status = status;
 
-        this.code   = ReasonPhrases[status]
+        const phrase = getReasonPhrase(status) || 'Internal Server Error';
+        this.code   = phrase
             .toUpperCase()
             .replace(/ /g, '_');
 

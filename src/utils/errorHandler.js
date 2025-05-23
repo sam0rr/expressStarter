@@ -1,19 +1,47 @@
-const logger = require('../utils/logger');
+const logger   = require('../utils/logger');
+const AppError = require('../errors/AppError');
+
+function normalizeError(err) {
+    if (err instanceof AppError) {
+        return err;
+    }
+
+    const status = Number.isInteger(err.status) && err.status >= 400 && err.status < 600
+        ? err.status
+        : 500;
+
+    return new AppError(
+        err.message || 'An error occurred',
+        status,
+        err.details
+    );
+}
+
+function buildPayload({ code, message, details, stack }) {
+    const payload = {
+        timestamp: new Date().toISOString(),
+        code,
+        message
+    };
+
+    if (details) {
+        payload.details = details;
+    }
+
+    if (process.env.NODE_ENV === 'development' && stack) {
+        payload.stack = stack;
+    }
+
+    return payload;
+}
 
 function errorHandler(err, req, res, next) {
-    logger.error(`[${req.method}] ${req.originalUrl} - ${err.message}`);
+    const error   = normalizeError(err);
+    const payload = buildPayload(error);
 
-    if (err.name === 'ValidationError') {
-        return res.status(400).json({ error: 'Validation error', details: err.errors });
-    }
+    logger.error(`${req.method} ${req.originalUrl} → [${error.status}] ${error.message}`);
 
-    if (err.name === 'ZodError') {
-        return res.status(400).json({ error: 'Validation error', details: err.flatten().fieldErrors });
-    }
-
-    res.status(err.status || 500).json({
-        error: err.message || 'Internal Server Error'
-    });
+    res.status(error.status).json(payload);
 }
 
 module.exports = errorHandler;

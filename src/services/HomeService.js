@@ -1,9 +1,9 @@
 const BaseService= require('./BaseService');
 
-class HomeService extends BaseService{
+class HomeService{
     getHomeMessage() {
         return 'Welcome to the Home endpoint!';
     }
 }
 
-module.exports = new HomeService(BaseService);
+module.exports = new HomeService();

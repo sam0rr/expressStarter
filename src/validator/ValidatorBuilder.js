@@ -31,6 +31,19 @@ class ValidatorBuilder {
         return this.middleware();
     }
 
+    onlyIf(conditionFn, fields) {
+        if (conditionFn()) {
+            return this.only(...fields);
+        }
+        return this;
+    }
+
+    exclude(...fields) {
+        const keys = Object.keys(this.validator.jsonSchema.properties || {});
+        const filtered = keys.filter(k => !fields.includes(k));
+        return this.only(...filtered);
+    }
+
     omit(...fields) {
         const filtered = this.validator.requiredFields.filter(f => !fields.includes(f));
         return this.only(...filtered);
@@ -39,6 +52,11 @@ class ValidatorBuilder {
     strip(...fields) {
         this._strip = fields;
         return this.middleware();
+    }
+
+    stripAll() {
+        const allFields = Object.keys(this.validator.jsonSchema.properties || {});
+        return this.strip(...allFields);
     }
 
     middleware() {

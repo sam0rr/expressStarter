@@ -56,10 +56,14 @@ class BaseService {
         }
     }
 
-    async checkUnique(data) {
+    async checkUnique(data, excludeId = null) {
         for (const field of this.uniqueFields) {
             if (data[field] != null) {
-                const exists = await this.model.exists({[field]: data[field]});
+                const query = { [field]: data[field] };
+                if (excludeId) {
+                    query._id = { $ne: excludeId };
+                }
+                const exists = await this.model.exists(query);
                 if (exists) {
                     throw new AppError(
                         `${this.model.modelName} with this ${field} already exists`,

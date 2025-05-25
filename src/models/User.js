@@ -29,6 +29,11 @@ const userSchema = new mongoose.Schema({
         maxlength: 100,
         match: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/,
     },
+    walletAddress: {
+        type: String,
+        unique: true,
+        required: true
+    },
     date: {
         type: Date,
         default: Date.now

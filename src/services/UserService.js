@@ -1,4 +1,4 @@
-const BaseService = require('./BaseService');
+const BaseService = require('./utils/BaseService');
 const UserModel = require('../models/User');
 const EncryptionService = require('./Encryption/EncryptionService');
 
@@ -24,11 +24,11 @@ class UserService extends BaseService {
             user.password = await EncryptionService.hashPassword(user.password);
         }
 
-        return this.updateById(id, user);
+        return this.updateOne(id, user);
     }
 
     async getUserById(id) {
-        return this.findById(id);
+        return this.findOne(id);
     }
 
     async getAllUsers() {
@@ -36,7 +36,7 @@ class UserService extends BaseService {
     }
 
     async deleteUserById(id) {
-        return this.deleteById(id);
+        return this.deleteOne(id);
     }
 }
 

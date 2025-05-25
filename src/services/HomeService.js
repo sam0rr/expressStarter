@@ -1,4 +1,4 @@
-const BaseService= require('./BaseService');
+const BaseService= require('./utils/BaseService');
 
 class HomeService{
     getHomeMessage() {

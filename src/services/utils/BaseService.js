@@ -1,8 +1,7 @@
 const { StatusCodes } = require('http-status-codes');
-const AppError = require('../errors/AppError');
+const AppError = require('../../errors/AppError');
 
 class BaseService {
-
     constructor(model) {
         this.model = model;
         this.uniqueFields = Object.entries(model.schema.paths)
@@ -12,7 +11,6 @@ class BaseService {
 
     async create(data) {
         await this.checkUnique(data);
-
         return this.model.create(data);
     }
 
@@ -20,8 +18,8 @@ class BaseService {
         return this.model.find(filter).lean();
     }
 
-    async findById(id) {
-        const doc = await this.model.findById(id).lean();
+    async findOne(filter) {
+        const doc = await this.model.findOne(filter).lean();
         if (!doc) {
             throw new AppError(
                 `${this.model.modelName} not found`,
@@ -31,11 +29,10 @@ class BaseService {
         return doc;
     }
 
-    async updateById(id, data) {
-        await this.checkUnique(data);
-
+    async updateOne(filter, data) {
+        await this.checkUnique(data, filter._id);
         const updated = await this.model
-            .findByIdAndUpdate(id, data, { new: true, runValidators: true })
+            .findOneAndUpdate(filter, data, { new: true, runValidators: true })
             .lean();
         if (!updated) {
             throw new AppError(
@@ -46,8 +43,8 @@ class BaseService {
         return updated;
     }
 
-    async deleteById(id) {
-        const deleted = await this.model.findByIdAndDelete(id).lean();
+    async deleteOne(filter) {
+        const deleted = await this.model.findOneAndDelete(filter).lean();
         if (!deleted) {
             throw new AppError(
                 `${this.model.modelName} not found`,

@@ -2,7 +2,11 @@ const mongoose = require('mongoose');
 
 const walletSchema = new mongoose.Schema({
     address: { type: String, required: true, unique: true },
-    balance: { type: Number, default: 500 }
+    balance: {
+        type: Number,
+        default: 500,
+        min: 0
+    }
 });
 
 const modelName = 'Wallet';

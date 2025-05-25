@@ -26,7 +26,6 @@ class WalletService extends BaseService {
                 StatusCodes.BAD_REQUEST
             );
         }
-
         return result;
     }
 
@@ -36,6 +35,12 @@ class WalletService extends BaseService {
             { $inc: { balance: amount } },
             options
         );
+    }
+
+    async applyTransaction(fromAddress, toAddress, amount, options = {}) {
+        const debitResult = await this.debit(fromAddress, amount, options);
+        const creditResult = await this.credit(toAddress, amount, options);
+        return { debitResult, creditResult };
     }
 }
 

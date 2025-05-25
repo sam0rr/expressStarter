@@ -36,8 +36,8 @@ const schema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['pending', 'confirmed', 'failed'],
-        default: 'pending'
+        enum: ['success', 'fail'],
+        required: true
     },
     createdAt: {
         type: Date,

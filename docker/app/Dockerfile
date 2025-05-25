@@ -1,12 +1,13 @@
-FROM node:20
+FROM oven/bun:latest
 
 WORKDIR /app
 
-COPY package*.json ./
-RUN npm install --production
+COPY package.json bun.lockb ./
+
+RUN bun install --production
 
 COPY . .
 
 EXPOSE 3000
 
-CMD ["npm", "start"]
+CMD ["bun", "src/index.js"]

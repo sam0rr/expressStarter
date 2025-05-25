@@ -1,11 +1,11 @@
 {
-  "name": "untitled1",
+  "name": "express_starter",
   "version": "1.0.0",
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "dev": "node src/index.js",
-    "start": "node src/index.js"
+    "dev": "bun --watch src/index.js",
+    "start": "bun src/index.js"
   },
   "dependencies": {
     "ajv": "^8.17.1",
@@ -22,6 +22,10 @@
   },
   "private": true,
   "devDependencies": {
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.10",
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
   }
 }

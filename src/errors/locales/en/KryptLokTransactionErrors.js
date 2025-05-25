@@ -19,6 +19,6 @@ module.exports = {
         pattern:      'Computed hash must be a 64-hex string.'
     },
     status: {
-        enum:         'Status must be one of pending, confirmed or failed.'
+        enum:         'Status must be one of success or failed.'
     }
 };

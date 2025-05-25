@@ -3,6 +3,7 @@ const BaseService        = require('./utils/BaseService');
 const UserModel          = require('../models/User');
 const WalletService      = require('./WalletService');
 const EncryptionService  = require('./Encryption/EncryptionService');
+const kryptlokService    = require('../services/KryptLokService');
 const AppError           = require('../errors/AppError');
 const { StatusCodes }    = require('http-status-codes');
 
@@ -18,7 +19,11 @@ class UserService extends BaseService {
 
     async login({ email, password }) {
         const user = await this.findOne({ email });
-        return await this._verfiyUserAuth(password, user);
+        await this._verfiyUserAuth(password, user);
+
+        await kryptlokService.processPendingForAddress(user.walletAddress);
+
+        return user;
     }
 
     async updateUserById(id, data) {

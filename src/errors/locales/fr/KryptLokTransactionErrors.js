@@ -1,11 +1,11 @@
 module.exports = {
     from: {
         required: 'L’adresse de l’expéditeur est requise.',
-        pattern:  'L’adresse de l’expéditeur doit être une chaîne hexadécimale de 64 caractères.'
+        pattern:  'L’adresse de l’expéditeur doit être une chaîne hexadécimale de 40 caractères.'
     },
     to: {
         required: 'L’adresse du destinataire est requise.',
-        pattern:  'L’adresse du destinataire doit être une chaîne hexadécimale de 64 caractères.'
+        pattern:  'L’adresse du destinataire doit être une chaîne hexadécimale de 40 caractères.'
     },
     amount: {
         required: 'Le montant est requis.',

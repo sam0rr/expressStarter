@@ -64,7 +64,7 @@ class Cryptography {
     /**
      * Generate cryptographically secure random salt (hex)
      */
-    static generateSalt(length = 32) {
+    static generateSalt(length = 16) {
         return crypto.randomBytes(length).toString('hex');
     }
 

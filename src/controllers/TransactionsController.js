@@ -2,7 +2,7 @@ const KryptlokService = require('../services/KryptLokService');
 const BaseController = require('./utils/BaseController');
 const bindAllMethods = require('../utils/controllers/bindAllMethods');
 
-class KryptlokController extends BaseController {
+class TransactionsController extends BaseController {
     constructor() {
         super();
         bindAllMethods(this);
@@ -19,4 +19,4 @@ class KryptlokController extends BaseController {
     }
 }
 
-module.exports = new KryptlokController();
+module.exports = new TransactionsController();

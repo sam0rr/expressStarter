@@ -12,7 +12,8 @@ services:
       - /app/node_modules
     command: npm run dev
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
 
   mongo:
     image: mongo:6
@@ -24,8 +25,27 @@ services:
       MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
       MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
       MONGO_INITDB_DATABASE: ${DB_NAME}
+    command:
+      - "mongod"
+      - "--replSet"
+      - "rs0"
+      - "--bind_ip_all"
+      - "--keyFile"
+      - "/data/keyfile/mongodb-keyfile"
     volumes:
       - mongo-data:/data/db
+      - ./docker/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - ./docker/keyfile/mongodb-keyfile:/data/keyfile/mongodb-keyfile:ro
+
+    healthcheck:
+      test: >
+        CMD-SHELL
+        mongo --quiet --eval "rs.isMaster().ismaster" \
+          -u "$$DB_USER" -p "$$DB_PASSWORD" --authenticationDatabase admin | grep true
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
 volumes:
   mongo-data:

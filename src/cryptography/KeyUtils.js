@@ -5,6 +5,9 @@ const Cryptography = require('./Cryptography');
 class KeyUtils {
     static SEED_BYTES = sodium.crypto_box_SEEDBYTES;
     static KEY_LENGTH = sodium.crypto_aead_xchacha20poly1305_ietf_KEYBYTES;
+    static PUBLICKEYBYTES  = sodium.crypto_box_PUBLICKEYBYTES;
+    static SECRETKEYBYTES  = sodium.crypto_box_SECRETKEYBYTES;
+    static KEYPAIRBYTES    = KeyUtils.PUBLICKEYBYTES + KeyUtils.SECRETKEYBYTES;
 
     static keypairCache = new Map();
 
@@ -49,21 +52,23 @@ class KeyUtils {
      */
     static getKeypairFromUserKey(userKey) {
         const normalized = this.normalizeUserKey(userKey);
-
-        if (!/^[a-f0-9]{64}$/.test(normalized)) {
+        if (!/^[a-f0-9]{64}$/i.test(normalized)) {
             throw new Error('User key must be a 32-byte hex string');
         }
 
-        const cacheKey = normalized;
-        if (!this.keypairCache.has(cacheKey)) {
+        if (!this.keypairCache.has(normalized)) {
             const seed = Buffer.from(normalized, 'hex');
-            const kp = Buffer.alloc(sodium.crypto_box_KEYPAIRBYTES);
-            sodium.crypto_box_seed_keypair(kp.subarray(0, 32), kp.subarray(32), seed);
+
+            const kp = Buffer.alloc(KeyUtils.KEYPAIRBYTES);
+            const pubSlice = kp.subarray(0, KeyUtils.PUBLICKEYBYTES);
+            const secSlice = kp.subarray(KeyUtils.PUBLICKEYBYTES, KeyUtils.KEYPAIRBYTES);
+
+            sodium.crypto_box_seed_keypair(pubSlice, secSlice, seed);
             Cryptography.zeroMemory(seed);
-            this.keypairCache.set(cacheKey, kp);
+            this.keypairCache.set(normalized, kp);
         }
 
-        return this.keypairCache.get(cacheKey);
+        return this.keypairCache.get(normalized);
     }
 
     /**

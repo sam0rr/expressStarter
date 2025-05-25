@@ -84,7 +84,7 @@ class EncryptionService {
      * @param {number} length
      * @returns {string}
      */
-    generateSalt(length = 32) {
+    generateSalt(length = 16) {
         return Cryptography.generateSalt(length);
     }
 

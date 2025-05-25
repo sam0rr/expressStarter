@@ -1,5 +1,7 @@
-const BaseService = require('./utils/BaseService');
-const WalletModel = require('../models/Wallet');
+const BaseService    = require('./utils/BaseService');
+const WalletModel    = require('../models/Wallet');
+const AppError       = require('../errors/AppError');
+const { StatusCodes } = require('http-status-codes');
 
 class WalletService extends BaseService {
     constructor() {
@@ -7,18 +9,32 @@ class WalletService extends BaseService {
     }
 
     async getBalance(address) {
-        const wallet = await this.findOne({ address });
-        return wallet.balance;
+        const w = await this.findOne({ address });
+        return w.balance;
     }
 
-    async applyTransaction({ from, to, amount }) {
-        await this.updateOne(
-            { address: from },
-            { $inc: { balance: -amount } }
+    async debit(address, amount, options = {}) {
+        const result = await this.model.updateOne(
+            { address, balance: { $gte: amount } },
+            { $inc: { balance: -amount } },
+            options
         );
-        await this.updateOne(
-            { address: to },
-            { $inc: { balance: amount } }
+
+        if (result.matchedCount === 0) {
+            throw new AppError(
+                `Insufficient funds in wallet ${address}`,
+                StatusCodes.BAD_REQUEST
+            );
+        }
+
+        return result;
+    }
+
+    async credit(address, amount, options = {}) {
+        return this.model.updateOne(
+            { address },
+            { $inc: { balance: amount } },
+            options
         );
     }
 }

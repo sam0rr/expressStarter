@@ -1,11 +1,11 @@
 module.exports = {
     from: {
         required:     'Sender address is required.',
-        pattern:      'Sender address must be a 64-hex string.'
+        pattern:      'Sender address must be a 40-hex string.'
     },
     to: {
         required:     'Recipient address is required.',
-        pattern:      'Recipient address must be a 64-hex string.'
+        pattern:      'Recipient address must be a 40-hex string.'
     },
     amount: {
         required:     'Amount is required.',

@@ -61,6 +61,25 @@ class EncryptionService {
     }
 
     /**
+     * RIPEMD-160 hash convenience
+     * @returns {string}
+     * @param data
+     */
+    hashRIPEMD160(data) {
+        return Cryptography.hashRIPEMD160(data);
+    }
+
+    /**
+     * Generic hash function (defaults to SHA-256)
+     * @param data
+     * @param {string} algorithm - any algorithm supported by crypto.createHash (e.g., 'sha256', 'ripemd160')
+     * @returns {string} hex-encoded digest
+     */
+    hash(data, algorithm = 'sha256') {
+        return Cryptography.hash(data, algorithm);
+    }
+
+    /**
      * Generate a cryptographically secure random salt (hex-encoded)
      * @param {number} length
      * @returns {string}

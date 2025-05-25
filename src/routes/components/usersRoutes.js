@@ -7,12 +7,6 @@ const User = require('../../models/User');
 
 const validator = new MongooseAjvValidator(User);
 
-router.post(
-    '/',
-    validator.validateBody(),
-    userCtrl.create
-);
-
 router.put('/:id',
     validator.validateParams().only('id'),
     validator.validateBody().optionalAll(),

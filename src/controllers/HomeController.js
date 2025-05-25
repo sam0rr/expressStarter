@@ -1,4 +1,4 @@
-const BaseController = require('./BaseController');
+const BaseController = require('./utils/BaseController');
 const homeService    = require('../services/homeService');
 
 class HomeController extends BaseController {

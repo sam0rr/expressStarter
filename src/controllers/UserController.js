@@ -1,4 +1,4 @@
-const BaseController = require('./BaseController');
+const BaseController = require('./utils/BaseController');
 const userService = require('../services/userService');
 const bindAllMethods = require('../utils/controllers/bindAllMethods');
 
@@ -6,11 +6,6 @@ class UserController extends BaseController {
     constructor() {
         super();
         bindAllMethods(this);
-    }
-
-    async create(req, res) {
-        const user = await userService.createUser(req.body);
-        this.sendCreated(res, user);
     }
 
     async findAll(req, res) {

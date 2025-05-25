@@ -3,6 +3,7 @@ const argon2 = require('argon2');
 const sodium = require('sodium-native');
 
 class Cryptography {
+    // Argon2 hashing parameters
     static OPSLIMIT = sodium.crypto_pwhash_OPSLIMIT_INTERACTIVE;
     static MEMLIMIT = sodium.crypto_pwhash_MEMLIMIT_INTERACTIVE;
     static ALG = sodium.crypto_pwhash_ALG_ARGON2ID13;
@@ -33,10 +34,31 @@ class Cryptography {
     }
 
     /**
-     * SHA-256 hash, hex encoded
+     * Generic hash function (defaults to SHA-256)
+     * @param {string|Buffer} input
+     * @param {string} algorithm - any algorithm supported by crypto.createHash (e.g., 'sha256', 'ripemd160')
+     * @returns {string} hex-encoded digest
+     */
+    static hash(input, algorithm = 'sha256') {
+        return crypto.createHash(algorithm).update(input).digest('hex');
+    }
+
+    /**
+     * SHA-256 hash convenience
+     * @param {string|Buffer} input
+     * @returns {string}
      */
     static hashSHA256(input) {
-        return crypto.createHash('sha256').update(input).digest('hex');
+        return Cryptography.hash(input, 'sha256');
+    }
+
+    /**
+     * RIPEMD-160 hash convenience
+     * @param {string|Buffer} input
+     * @returns {string}
+     */
+    static hashRIPEMD160(input) {
+        return Cryptography.hash(input, 'ripemd160');
     }
 
     /**

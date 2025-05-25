@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
-const EncryptionService = require('../services/EncryptionService');
+const EncryptionService = require('../services/Encryption/EncryptionService');
 
 const ADDRESS_PATTERN = /^[A-Fa-f0-9]{64}$/;
 
-const kryptLokTransactionSchema = new mongoose.Schema({
+const schema = new mongoose.Schema({
     from: {
         type: String,
         required: true,
@@ -26,12 +26,12 @@ const kryptLokTransactionSchema = new mongoose.Schema({
     previousHash: {
         type: String,
         required: true,
-        match: /^[A-Fa-f0-9]{64}$/
+        match: ADDRESS_PATTERN
     },
     hash: {
         type: String,
         unique: true,
-        match: /^[A-Fa-f0-9]{64}$/
+        match: ADDRESS_PATTERN
     },
     status: {
         type: String,
@@ -44,12 +44,15 @@ const kryptLokTransactionSchema = new mongoose.Schema({
     }
 });
 
-kryptLokTransactionSchema.pre('validate', function (next) {
+schema.pre('validate', function (next) {
     if (!this.hash) {
         const payload = `${this.from}:${this.to}:${this.amount}:${this.previousHash}:${this.createdAt}`;
-        this.hash = EncryptionService.hash256(payload);
+        this.hash = EncryptionService.hash(payload, 'sha256').slice(0, 64);
     }
     next();
 });
 
-module.exports = mongoose.model('KryptLokTransaction', kryptLokTransactionSchema);
+const modelName = 'kryptlokTransaction';
+module.exports = mongoose.models[modelName]
+    ? mongoose.model(modelName)
+    : mongoose.model(modelName, schema);

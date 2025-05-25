@@ -1,5 +1,5 @@
 const WalletService  = require('../services/WalletService');
-const BaseController = require('./BaseController');
+const BaseController = require('./utils/BaseController');
 const bindAllMethods = require('../utils/controllers/bindAllMethods');
 
 class WalletController extends BaseController {

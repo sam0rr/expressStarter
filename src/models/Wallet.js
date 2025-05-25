@@ -5,4 +5,7 @@ const walletSchema = new mongoose.Schema({
     balance: { type: Number, default: 0 }
 });
 
-module.exports = mongoose.model('Wallet', walletSchema);
+const modelName = 'Wallet';
+module.exports = mongoose.models[modelName]
+    ? mongoose.model(modelName)
+    : mongoose.model(modelName, walletSchema);

@@ -1,10 +1,10 @@
 const BaseService = require('./utils/BaseService');
-const KryptLokTransactionModel = require('../models/KryptLokTransaction');
+const KryptlokTransactionModel = require('../models/KryptLokTransaction');
 const WalletService = require('./WalletService');
 
 class KryptLokService extends BaseService {
     constructor() {
-        super(KryptLokTransactionModel);
+        super(KryptlokTransactionModel);
     }
 
     async createTransaction(data) {

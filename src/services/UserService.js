@@ -53,7 +53,7 @@ class UserService extends BaseService {
         data.walletAddress = walletAddr;
         const user = await this.create(data);
 
-        await WalletService.create({ address: walletAddr, balance: 0 });
+        await WalletService.create({ address: walletAddr, balance: 500 });
 
         return user;
     }

@@ -9,7 +9,7 @@ const validator = new MongooseAjvValidator(User);
 
 router.post(
     '/register',
-    validator.validateBody().only('name', 'email', 'password'),
+    validator.validateBody().only('name', 'email', 'password', 'age'),
     authCtrl.register
 );
 

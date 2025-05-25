@@ -4,10 +4,22 @@
 /yarn-debug.log*
 /yarn-error.log*
 
+# Lockfiles
+/package-lock.json
+/yarn.lock
+/bun.lockb
+
 # Local env
 .env
 .env.*
 
+# IDE
+.vscode/
+.idea/
+*.swp
+jsconfig.json
+
+# Build output
 /tmp
 /dist
 /cache
@@ -25,11 +37,6 @@ logs
 *.pid
 *.seed
 *.pid.lock
-
-# IDE
-.vscode/
-.idea/
-*.swp
 
 # MacOS / system
 .DS_Store

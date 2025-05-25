@@ -19,8 +19,7 @@ const userSchema = new mongoose.Schema({
         required: true,
         trim: true,
         min: 1,
-        max: 150,
-        default: 18
+        max: 150
     },
     password: {
         type: String,

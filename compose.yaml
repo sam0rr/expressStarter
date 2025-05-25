@@ -10,7 +10,7 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
-    command: npm run dev
+    command: bun run dev
     depends_on:
       - mongo
 

@@ -40,12 +40,12 @@ services:
     healthcheck:
       test: >
         CMD-SHELL
-        mongo --quiet --eval "rs.isMaster().ismaster" \
-          -u "$$DB_USER" -p "$$DB_PASSWORD" --authenticationDatabase admin | grep true
+        mongo --quiet --eval "rs.status().myState===1" \
+          -u "$$DB_USER" -p "$$DB_PASSWORD" --authenticationDatabase admin
       interval: 5s
       timeout: 5s
-      retries: 5
-      start_period: 10s
+      retries: 10
+      start_period: 15s
 
 volumes:
   mongo-data:
